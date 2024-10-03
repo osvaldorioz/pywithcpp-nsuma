@@ -1,7 +1,8 @@
 import suma
 import random
 import time
-from fastapi import FastAPI
+import asyncio
+from fastapi import FastAPI, HTTPException
 from math import sqrt
 
 app = FastAPI()
@@ -21,17 +22,15 @@ def generar_lista_flotantes_aleatorios(tamano, minimo, maximo):
     """
     return [random.uniform(minimo, maximo) for _ in range(tamano)]
 
-COUNT = 500000000
-
 def countdown(n):
     while n > 0:
         t = sqrt(n)
         n -= 1
 
-def ejecutar():
+def ejecutar(number: int):
 
     start = time.time()
-    countdown(COUNT)
+    countdown(number)
     end = time.time()
 
     var1 = 'Time taken in seconds: '
@@ -39,10 +38,10 @@ def ejecutar():
 
     return '{var1}{var2}'.format(var1=var1, var2=var2)
 
-def ejecutar2():
+def ejecutar2(number: int):
 
     start = time.time()
-    resultado = suma.contador(COUNT)
+    resultado = suma.contador(number)
     end = time.time()
 
     var1 = 'Time taken in seconds: '
@@ -51,15 +50,21 @@ def ejecutar2():
     return '{var1}{var2}, {var3}'.format(var1=var1, var2=var2, var3=resultado)
 
 @app.get("/counter")
-async def counterwcpp():
-    
-    str = ejecutar()
-    return {"message": str}
+async def long_task(number: int, timeout:float):
+    async def counter(number):
+        str = ejecutar(number)
+        return {"message": str}
+
+    try:
+        result = await asyncio.wait_for(counter(number), timeout=timeout)
+        return result
+    except asyncio.TimeoutError:
+        raise HTTPException(status_code=504, detail="Timeout en la operación interna")
 
 @app.get("/counterwcpp")
-async def counterwcpp():
+async def counterwcpp(number: int):
     
-    str = ejecutar2()
+    str = ejecutar2(number)
     return {"message": str}
 
 @app.get("/navg")
