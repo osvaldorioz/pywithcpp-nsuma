@@ -14,10 +14,10 @@ double sum_floats(const std::vector<double>& numbers) {
 }
 
 int contador(int total){
-    float temp = 0.0;
+    //float temp = 0.0;
     int i=total;
     for (; i > 0; i--) {
-    	temp = sqrt(i);
+    	sqrt(i);
     }	
     return i;
 }
