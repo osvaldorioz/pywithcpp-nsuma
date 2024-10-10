@@ -5,6 +5,7 @@ FROM python:3.12-slim
 RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
+    g++ \
     && rm -rf /var/lib/apt/lists/*
 
 # Establecer directorio de trabajo
@@ -18,10 +19,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Compilar la biblioteca de C++ con Pybind11
-RUN python setup.py build_ext --inplace
+#RUN python setup.py build_ext --inplace
+RUN c++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) app/pynsuma.cpp -o pynsuma$(python3-config --extension-suffix)
 
 # Exponer el puerto para Uvicorn
 EXPOSE 8000
 
 # Comando para correr la aplicación Uvicorn
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+
