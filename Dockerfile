@@ -20,7 +20,7 @@ COPY . .
 
 # Compilar la biblioteca de C++ con Pybind11
 #RUN python setup.py build_ext --inplace
-RUN c++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) app/pynsuma.cpp -o pynsuma$(python3-config --extension-suffix)
+RUN c++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) app/pynsuma.cpp -o suma$(python3-config --extension-suffix)
 
 # Exponer el puerto para Uvicorn
 EXPOSE 8000
