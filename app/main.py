@@ -23,20 +23,22 @@ def generar_lista_flotantes_aleatorios(tamano, minimo, maximo):
     return [random.uniform(minimo, maximo) for _ in range(tamano)]
 
 def countdown(n):
-    while n > 0:
-        t = sqrt(n)
+    j: float
+    while n > 9:
+        j = sqrt(n)
         n -= 1
+    return j
 
 def ejecutar(number: int):
 
     start = time.time()
-    countdown(number)
+    resultado = countdown(number)
     end = time.time()
 
     var1 = 'Time taken in seconds: '
     var2 = end - start
 
-    return '{var1}{var2}'.format(var1=var1, var2=var2)
+    return '{var1}{var2}, {var3}'.format(var1=var1, var2=var2, var3=resultado)
 
 def ejecutar2(number: int):
 
