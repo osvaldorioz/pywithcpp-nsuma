@@ -13,13 +13,13 @@ double sum_floats(const std::vector<double>& numbers) {
     return sum;
 }
 
-int contador(int total){
-    //float temp = 0.0;
-    int i=total;
-    for (; i > 0; i--) {
-    	sqrt(i);
+float contador(long total){
+    long i{total};
+    float j{0};
+    for (; i > 9; i--) {
+    	j = sqrt(i);
     }	
-    return i;
+    return j;
 }
 
 double avg_floats(const std::vector<double>& numbers) {
